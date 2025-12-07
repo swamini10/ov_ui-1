@@ -9,14 +9,8 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatIcon, MatIconModule } from '@angular/material/icon';
 import { IfDirective } from '../shared/if.directive'; // <-- added
-<<<<<<< HEAD
-=======
 import { LoginService } from '../services/login.service';
-<<<<<<< HEAD
->>>>>>> a4967df7d97fc81d48c9e46476c153ada1a90259
-=======
 import { Router } from '@angular/router';
->>>>>>> 39e31ddc8c1b5d6945594cfea783aa17128e2835
 
 @Component({
   selector: 'login',
@@ -32,10 +26,7 @@ import { Router } from '@angular/router';
     MatSnackBarModule,
     IfDirective
   ],
-<<<<<<< HEAD
-=======
   standalone: true,
->>>>>>> a4967df7d97fc81d48c9e46476c153ada1a90259
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.scss']
 })
@@ -49,17 +40,9 @@ export class LoginComponent implements OnInit {
   screenNumber = 1;
 
   constructor(
-<<<<<<< HEAD
-    private formBuilder: FormBuilder
-=======
     private formBuilder: FormBuilder,
-<<<<<<< HEAD
-    private loginService: LoginService
->>>>>>> a4967df7d97fc81d48c9e46476c153ada1a90259
-=======
     private loginService: LoginService,
     private router : Router
->>>>>>> 39e31ddc8c1b5d6945594cfea783aa17128e2835
   ) {
     this.otpForm = this.formBuilder.group({});
     this.loginForm = this.formBuilder.group({});
@@ -79,6 +62,13 @@ export class LoginComponent implements OnInit {
   get email() {
     return this.otpForm.get('email');
   }
+
+
+  navigateToUsercreation(): void{ 
+    this.router.navigate(['/userregistration']);
+    
+  }
+
 
   login() : void {
     debugger;
@@ -102,21 +92,6 @@ export class LoginComponent implements OnInit {
   }
 
   generateOtp(): void {
-<<<<<<< HEAD
-    debugger;
-    this.submitted = true;
-    this.errorMessage = '';
-    this.successMessage = '';
-
-    if (this.loginForm.invalid) {
-      return;
-    }else {
-      this.successMessage = 'OTP has been sent to your email.';
-    }
-
-    this.loading = true;
-    
-=======
     this.submitted = true;
     this.errorMessage = '';
     this.successMessage = '';
@@ -140,6 +115,5 @@ export class LoginComponent implements OnInit {
       );
     }
 
->>>>>>> a4967df7d97fc81d48c9e46476c153ada1a90259
   }
 }

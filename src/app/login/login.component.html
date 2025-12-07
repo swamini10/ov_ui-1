@@ -50,20 +50,10 @@
           <mat-spinner diameter="20" *if="loading"></mat-spinner>
           {{ loading ? "Sending OTP..." : "Generate OTP" }}
         </button>
-        <a matButton href="https://www.google.com/" target="_blank"
-          >Create New User</a
-        >
+        <a matButton (click)="navigateToUsercreation()">Create New User</a>
       </form>
     </mat-card-content>
   </mat-card>
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
-
-  
->>>>>>> a4967df7d97fc81d48c9e46476c153ada1a90259
-</div>
-=======
   } @else if (screenNumber ==2) {
   <mat-card>
     <mat-card-header>
@@ -112,4 +102,3 @@
 
   }
 </div>
->>>>>>> 39e31ddc8c1b5d6945594cfea783aa17128e2835
