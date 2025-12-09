@@ -9,10 +9,8 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatIcon, MatIconModule } from '@angular/material/icon';
 import { IfDirective } from '../shared/if.directive'; // <-- added
-<<<<<<< HEAD
-=======
 import { LoginService } from '../services/login.service';
->>>>>>> a4967df7d97fc81d48c9e46476c153ada1a90259
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'login',
@@ -28,80 +26,94 @@ import { LoginService } from '../services/login.service';
     MatSnackBarModule,
     IfDirective
   ],
-<<<<<<< HEAD
-=======
   standalone: true,
->>>>>>> a4967df7d97fc81d48c9e46476c153ada1a90259
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.scss']
 })
 export class LoginComponent implements OnInit {
   loginForm: FormGroup;
+  otpForm: FormGroup;
   loading = false;
   submitted = false;
   successMessage = '';
   errorMessage = '';
+  screenNumber = 1;
 
   constructor(
-<<<<<<< HEAD
-    private formBuilder: FormBuilder
-=======
     private formBuilder: FormBuilder,
-    private loginService: LoginService
->>>>>>> a4967df7d97fc81d48c9e46476c153ada1a90259
+    private loginService: LoginService,
+    private router : Router
   ) {
+    this.otpForm = this.formBuilder.group({});
     this.loginForm = this.formBuilder.group({});
   }
 
   ngOnInit(): void {
-    this.loginForm = this.formBuilder.group({
+    this.screenNumber = 1;
+    this.otpForm = this.formBuilder.group({
       email: ['', [Validators.required, Validators.email]]
     });
-  }
+    this.loginForm = this.formBuilder.group({
+      userId: ['', [Validators.required, Validators.email]],
+      otp : ['', [Validators.required, Validators.minLength(5), Validators.maxLength(5)]]
+    });
+ }
 
   get email() {
-    return this.loginForm.get('email');
+    return this.otpForm.get('email');
+  }
+
+
+  navigateToUsercreation(): void{ 
+    this.router.navigate(['/userregistration']);
+    
+  }
+
+
+  login() : void {
+    debugger;
+    // Login logic here
+    this.loginService.login(this.otpForm.value.email, this.loginForm.value.otp).subscribe(
+      (response) => {
+        this.successMessage = 'Login successful!';  
+        this.errorMessage = '';
+        // Further actions on successful login
+        this.router.navigate(['/home']);
+      },
+      (errorResponse) => {
+        this.errorMessage = 'Login failed. Please try again.';
+        this.successMessage = '';
+        if(errorResponse.error && errorResponse.error.errors && errorResponse.error.errors.length > 0) {
+          this.errorMessage = errorResponse.error.errors[0];
+        }
+      }
+    );
+
   }
 
   generateOtp(): void {
-<<<<<<< HEAD
-    debugger;
-    this.submitted = true;
-    this.errorMessage = '';
-    this.successMessage = '';
-
-    if (this.loginForm.invalid) {
-      return;
-    }else {
-      this.successMessage = 'OTP has been sent to your email.';
-    }
-
-    this.loading = true;
-    
-=======
     this.submitted = true;
     this.errorMessage = '';
     this.successMessage = '';
     this.loading = true;
-    if (this.loginForm.invalid) {
+    if (this.otpForm.invalid) {
       return;
     }else {
       this.loginService.generateOtp(this.email?.value).subscribe(
         (response) => {
           this.successMessage = 'OTP has been sent to your email.';
-       
+       this.screenNumber = 2;
           this.loading = false;
         },
-        (error) => {
+        (errorResponse) => {
           this.errorMessage = 'Failed to send OTP. Please try again.';
-             if(error.error && error.error.errors && error.error.errors.length > 0) {
-            this.errorMessage = error.error.errors[0];
-          }
+             if(errorResponse.error && errorResponse.error.errors && errorResponse.error.errors.length > 0) {
+               this.errorMessage = errorResponse.error.errors[0];
+            }
           this.loading = false;
         }
       );
     }
 
->>>>>>> a4967df7d97fc81d48c9e46476c153ada1a90259
   }
 }
