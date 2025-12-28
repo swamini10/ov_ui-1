@@ -4,6 +4,8 @@ import { URLConstants } from "../contants/url.enum";
 import { Observable } from "rxjs";
 import { APIResponse } from "../models/ApiResponse";
 import { DropdownModel } from "../models/dropdown.model";
+import { MenuItem } from "../models/menu.model";
+
 
 @Injectable({
     providedIn: 'root'
@@ -25,6 +27,26 @@ export class UserService {
 
     public saveAddress(address: any): Observable<APIResponse<any>> {
         return this.httpClient.post<APIResponse<any>>(URLConstants.BASE_URL + URLConstants.ADDRESS_SAVE, address);
+    }
+
+    public getMenuItems(): Observable<APIResponse<MenuItem[]>> {
+        return this.httpClient.get<APIResponse<MenuItem[]>>(URLConstants.BASE_URL + URLConstants.GET_MENU_ITEMS);
+    }
+
+    public getVoterDetailsList(): Observable<APIResponse<any[]>> {
+        return this.httpClient.get<APIResponse<any[]>>(URLConstants.BASE_URL + URLConstants.GET_VOTER_DETAILS_LIST);
+    }
+
+    public getUserDetailsByStatus(status: string = 'Pending', orderBy: string = 'created_date', order: string = 'desc'): Observable<APIResponse<any[]>> {
+        const params = {
+            status: status,
+            orderBy: orderBy,
+            order: order
+        };
+        return this.httpClient.get<APIResponse<any[]>>(
+            `${URLConstants.BASE_URL}/v1/user_detail/findbyStatus`,
+            { params }
+        );
     }
 
     public saveUserDetails(userDetails: any, photo: File | null, addressId: string, roleId: string): Observable<APIResponse<any>> {
@@ -49,5 +71,22 @@ export class UserService {
     public getUserRoles(): Observable<APIResponse<DropdownModel[]>> {
         return this.httpClient.get<APIResponse<DropdownModel[]>>(URLConstants.BASE_URL + URLConstants.GET_USER_ROLES);
     }
+
+    public getVotersForVerification(): Observable<APIResponse<any[]>> {
+        return this.httpClient.get<APIResponse<any[]>>(URLConstants.BASE_URL + '/voters/pending-verification');
+    }
+
+    public updateVoterVerificationStatus(voterId: string, status: string): Observable<APIResponse<any>> {
+        return this.httpClient.patch<APIResponse<any>>(
+            URLConstants.BASE_URL + `/v1/user_detail/approve/${voterId}`, 
+            { status }
+        );
+    }
+
+    public getOfficers(): Observable<APIResponse<DropdownModel[]>> {
+        return this.httpClient.get<APIResponse<DropdownModel[]>>(URLConstants.BASE_URL + URLConstants.GET_OFFICERS);
+    }   
+
+   
 }
 
